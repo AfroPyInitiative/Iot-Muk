@@ -1,0 +1,23 @@
+//LCD connection for the project
+1.VSS GND
+2.VDD 5V+
+3.V0 GND
+4.RS (Register Select) GPIO25
+5.RW GND
+6.E (Enable) GPIO5
+7.D0  #Not Needed
+8.D1  #Not Needed
+9.D2  #Not Needed
+10.D3 #Not Needed 
+11.D4 GPIO21
+12.D5 GPIO20
+13.D6 GPIO16
+14.D7 GPIO12
+15.A 5V+
+16.K GND
+
+//Buzzer Connection
+1.S GPIO22
+2.+ 5V+
+3.- GND
+//Humiture Sensor Connection
