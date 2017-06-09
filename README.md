@@ -84,6 +84,9 @@ def getResult(channel=0):     				# Get ADC result, input channal
 			return 0
 
 def getResult1():
+
+however for our case, we are not using this library, this is what shouold be  done if you require the library
+
     return getResult(1)
 
 
