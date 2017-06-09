@@ -3,7 +3,6 @@
 import dht11
 import RPi.GPIO as GPIO
 import time
-import MySQLdb
 from time import sleep
 
 # Define GPIO to LCD mapping
@@ -15,9 +14,13 @@ LCD_D6 = 16
 LCD_D7 = 12
 
 Temp_sensor = 24
+#buzzzer connection pin
 Buzzer_sensor = 18
 receiver_in = 27
+#Led connections
+#blue indicates normal range values
 blue_led = 7
+#white/Red indicates out of range values
 white_led = 4
 
 # Define some device constants
@@ -65,24 +68,13 @@ def main():
 	# Send some test
 
 	if result.is_valid():
+		#Display the readings for room,temperature and humidity on the LCD
 		lcd_string("Temp :"+str(result.temperature)+"C",LCD_LINE_1)
 		lcd_string("Humid:"+str(result.humidity)+"%",LCD_LINE_2)
 		print 'Temperature: '+str(result.temperature)
 		print 'Humidity: '+str(result.humidity)
 		time.sleep(1) # 3 second delay
-
-		if str(result.temperature) > 36.7 or str(result.humidity) > 70:
-                  print 'Conditions too HIGH'
-                  #Turn On LED and Buzzer
-                  beep(2)
-                  
-                  
-                elif str(result.temperature) < 36.5 or str(result.humidity) < 54:
-                  print 'Conditions too LOW'
-                  #Turn On LED and Buzzer
-                  beep(2)
-
-              
+		
 		getValue = GPIO.input(receiver_in)
                 value = alpha * oldValue + (1 - alpha) * getValue
                 change = value - oldValue    
@@ -94,31 +86,28 @@ def main():
                 pulse_rate = (value/0.01)
                 print 'Breathing Rate: '+str(breath)
                 sleep(period)
-               
+               #Display Heartbeat readings on the LCD
                 lcd_string("PBM: "+str(value/0.01)+"",LCD_LINE_1)
-		lcd_string("Res: "+str(breath)+"/20",LCD_LINE_2)
 		sleep(period)
+		#Change the Values to meet the actual expected room temperature and humidity for a patient
+		if result.temperature > 36.7 or result.humidity > 70:
+                  print 'Conditions too HIGH'
+                  #Turn On LED and Buzzer
+                  beep(2)
+		  #Blink the LED
+                  
+                #Change the Values to meet the actual expected room temperature and humidity for a patient 
+                elif result.temperature < 36.5 or result.humidity < 54:
+                  print 'Conditions too LOW'
+                  #Turn On LED and Buzzer
+                  beep(2)
+		#Blink the LED
 		
-		#Connection to the Database
-		#db = MySQLdb.connect('localhost','trevor','Avenger123!','pbm')
-		#cursor = db.cursor()
+		#Test for normal heart heartbeat for a normal person normal heartbeat range is 80-90
 
-		#prepare sql querry
-		#sql = """INSERT INTO reading(body_temperature,environment_temperature,
-                #pulse_rate,premor_id)
-                #VALUES('temperature','temperature','pulse_rate','premor_id')"""
-
-		#try:
-                  #cursor.execute(sql)
-                  #db.commit()
-                #except:
-                  #db.rollback()
-
-                  #disconnect from server
-                  #db.close()
-
-
-
+              
+		
+		
 def lcd_init():
   # Initialise display
   lcd_byte(0x33,LCD_CMD) # 110011 Initialise
@@ -202,8 +191,7 @@ def beep(x):
   time.sleep(x)
   off()
   time.sleep(x)
-  
-
+	
 if __name__ == '__main__':
 
   try:
