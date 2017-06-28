@@ -16,6 +16,8 @@
 15.A 5V+
 16.K GND
 
+17. 3V+
+
 //Buzzer Connection
 1.S GPIO22
 2.+ 5V+
