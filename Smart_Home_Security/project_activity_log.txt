@@ -1,0 +1,7 @@
+HEllo Guys!
+
+ACtivity
+
+1. write a python module that will detect tilt and touch from a sensor and send a notificatioin msg via GSM to a mobile phone. use the avaliable messaging APIs. Ask herbert for them.
+Research on how the GSM module works.
+Lets meet with some progress.
