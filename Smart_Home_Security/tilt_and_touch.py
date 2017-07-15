@@ -1,4 +1,6 @@
 import RPi.GPIO as GPIO
+import serial
+import time
 
 led = 11
 tilt = 12
@@ -6,7 +8,7 @@ touch = 13
 led2 = 25
 
 def setup():
-    GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
     GPIO.setup(led, GPIO.OUT)
     GPIO.setup(led2, GPIO.OUT)
     GPIO.setup(tilt, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -22,11 +24,6 @@ def loop():
         elif GPIO.input(touch) == HIGH:
              GPIO.ouput(led2, GPOI.HIGH)
            print 'touched'
-
-        elif GPIO.input(touch) == HIGH and GPIO.input(tilt) == HIGH:
-            GPIO.output(led2, GPIO.HIGH)
-            GPIO.output(led, GPIO.HIGH)
-            print 'touched and tilted'
            
         elif GPIO.input(tilt) == LOW:
             GPIO.ouput(led, GPOI.LOW)
@@ -34,6 +31,14 @@ def loop():
         else:
             GPIO.ouput(led, GPOI.HIGH)
             print 'tilted'
+            ser = serial.Serial('/dev/serial10', 9600, timeout = 1)
+
+            ser.write('AT+CMGS="+256771238781"'+'\r\n')
+            ser.read(10)
+            time.sleep(10)
+
+            ser.write('door tilted\r\n')
+            ser.close()
 
 def destroy():
     GPIO.cleanup()

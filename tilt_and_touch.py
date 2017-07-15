@@ -29,7 +29,7 @@ def loop():
             print 'touched and tilted'
            
         elif GPIO.input(tilt) == LOW:
-            GPIO.ouput(led, GPOI.LOW)
+            GPIO.ouput(led, GPIO.LOW)
             print 'not tilited'
         else:
             GPIO.ouput(led, GPOI.HIGH)
@@ -41,7 +41,9 @@ def destroy():
 if __name__ == '__main__':     
 	setup()
 	try:
-		loop()
+            loop()
+
 	except KeyboardInterrupt:
-		destroy()
+            destroy()
+		
     
